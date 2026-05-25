@@ -32,6 +32,7 @@ const ToggleGroupItem = React.forwardRef<
   React.ElementRef<typeof ToggleGroupPrimitive.Item>,
   VariantProps<typeof toggleVariants> & {
     value: string;
+    className?: string;
   } & Omit<
     React.ComponentPropsWithoutRef<typeof ToggleGroupPrimitive.Item>,
     "value" | "className"
