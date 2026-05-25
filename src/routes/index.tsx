@@ -193,7 +193,7 @@ function Hero() {
           {phase >= 2 && (
             <TerminalLine
               delay={1}
-              text="yacine benaroussi — computer science undergrad (master's), software engineer based in oran, algeria."
+              text="yacine benaroussi — computer science persuing my master's, software engineer based in oran, algeria."
               onDone={() => setPhase((p) => Math.max(p, 3))}
             />
           )}
