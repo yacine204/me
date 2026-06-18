@@ -4,554 +4,203 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Yacine Benaroussi</title>
+  <meta name="description" content="Yacine Benaroussi — software engineer working on AI, full-stack and low-level systems." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
   <style>
     :root {
-      --radius: 0.25rem;
-      --background: oklch(0.16 0.005 60);
-      --foreground: oklch(0.88 0.01 80);
-      --card: oklch(0.19 0.006 60);
-      --primary: oklch(0.72 0.14 55);
-      --muted: oklch(0.22 0.006 60);
-      --muted-foreground: oklch(0.58 0.012 70);
-      --border: oklch(0.26 0.008 60);
+      --bg: #111110;
+      --fg: #d8d4cb;
+      --dim: #82817a;
+      --line: #2a2a27;
+      --accent: #c98a4b;
       --font: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
     }
-
-    * { box-sizing: border-box; border-color: var(--border); margin: 0; padding: 0; }
-    html { scroll-behavior: smooth; background: var(--background); }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; background: var(--bg); }
     body {
-      background: var(--background);
-      color: var(--foreground);
+      background: var(--bg);
+      color: var(--fg);
       font-family: var(--font);
-      font-size: 15px;
-      line-height: 1.6;
+      font-size: 14px;
+      line-height: 1.7;
       -webkit-font-smoothing: antialiased;
     }
-    ::selection { background: oklch(0.72 0.14 55 / 0.3); color: var(--foreground); }
+    ::selection { background: rgba(201, 138, 75, 0.25); }
     a { color: inherit; text-decoration: none; }
 
-    .container { max-width: 48rem; margin: 0 auto; padding-left: 1.5rem; padding-right: 1.5rem; }
+    .wrap { max-width: 42rem; margin: 0 auto; padding: 0 1.5rem; }
 
-    /* header */
     header {
-      position: fixed; inset: 0 0 auto 0; z-index: 50;
-      border-bottom: 1px solid var(--border);
-      background: oklch(0.16 0.005 60 / 0.9);
-      backdrop-filter: blur(8px);
+      display: flex; align-items: baseline; justify-content: space-between;
+      flex-wrap: wrap; gap: 0.5rem 1.25rem;
+      padding-top: 4rem; padding-bottom: 3rem;
     }
-    .header-inner {
-      display: flex; align-items: center; justify-content: space-between;
-      padding-top: 0.75rem; padding-bottom: 0.75rem; font-size: 0.75rem;
-    }
-    header a { color: var(--muted-foreground); transition: color 0.15s; }
-    header a:hover { color: var(--foreground); }
-    header nav { display: flex; align-items: center; gap: 1.25rem; }
+    header .me { font-weight: 500; }
+    header .me .dim { color: var(--dim); }
+    header nav { display: flex; gap: 1.25rem; font-size: 13px; }
+    header nav a { color: var(--dim); transition: color 0.15s; }
+    header nav a:hover { color: var(--fg); }
 
-    main { padding-top: 7rem; padding-bottom: 8rem; }
+    .intro { color: var(--fg); margin-bottom: 0.75rem; }
+    .intro .accent { color: var(--accent); }
+    .intro-sub { color: var(--dim); max-width: 36rem; }
 
-    /* terminal hero */
-    .terminal {
-      overflow: hidden; border: 1px solid var(--border); border-radius: 0.375rem;
-      background: oklch(0.19 0.006 60 / 0.6);
-      box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.3);
-    }
-    .terminal-bar {
-      display: flex; align-items: center;
-      border-bottom: 1px solid var(--border);
-      background: oklch(0.16 0.005 60 / 0.6);
-      padding: 0.5rem 0.75rem;
-      font-size: 11px; color: var(--muted-foreground);
-    }
-    .terminal-body { padding: 1.5rem; font-size: 14px; line-height: 1.65; }
-    .terminal-body > div { margin-bottom: 0.75rem; }
-    .terminal-body > div:last-child { margin-bottom: 0; }
-    .prompt-user { color: var(--primary); }
-    .prompt-dim { color: var(--muted-foreground); }
-    .prompt-path { color: oklch(0.88 0.01 80 / 0.7); }
-    .term-line { color: oklch(0.88 0.01 80 / 0.85); }
-    .term-line .gt { color: var(--primary); user-select: none; }
-    .term-line .hl { color: var(--primary); }
-    .caret {
-      display: inline-block; width: 0.55ch; height: 1em;
-      transform: translateY(2px); background: var(--primary);
-      vertical-align: middle; margin-left: 2px;
-      animation: pulse 1.2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
-    }
-    @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
-    .hidden { display: none; }
-
-    /* sections */
-    section { padding-top: 4rem; padding-bottom: 4rem; }
-    section#top { padding-top: 0; padding-bottom: 5rem; }
-    .section-header { margin-bottom: 2rem; border-bottom: 1px solid var(--border); padding-bottom: 0.75rem; }
-    .section-header .cmd { font-size: 0.75rem; color: var(--muted-foreground); }
-    .section-header .cmd span { color: var(--primary); }
-    .section-header h2 { margin-top: 0.5rem; font-size: 1.25rem; font-weight: 600; letter-spacing: -0.01em; }
-
-    .about-text p { margin-bottom: 1rem; color: oklch(0.88 0.01 80 / 0.85); }
-    .about-text p.dim { color: var(--muted-foreground); }
-
-    /* project groups */
-    .group-label {
-      display: flex; align-items: center; gap: 0.75rem; margin-bottom: 1.5rem;
-    }
-    .group-label span:first-child {
-      font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.1em;
-      color: var(--muted-foreground);
-    }
-    .group-label .rule { height: 1px; flex: 1; background: oklch(0.26 0.008 60 / 0.6); }
-    .project-group { margin-bottom: 3.5rem; }
-    .project-group .projects { display: flex; flex-direction: column; gap: 3rem; }
-
-    article .title-row { display: flex; flex-wrap: wrap; align-items: baseline; column-gap: 0.75rem; row-gap: 0.25rem; }
-    article .name {
-      display: inline-flex; align-items: baseline; gap: 0.375rem;
-      font-size: 1.125rem; font-weight: 600; transition: color 0.15s;
-    }
-    article .name:hover { color: var(--primary); }
-    article .name svg { align-self: center; opacity: 0; transition: opacity 0.15s; }
-    article:hover .name svg { opacity: 1; }
-    article .status { font-size: 0.75rem; color: var(--muted-foreground); }
-    article .status .paren { color: oklch(0.72 0.14 55 / 0.7); }
-    article .desc { margin-top: 0.75rem; max-width: 42rem; color: var(--muted-foreground); text-wrap: pretty; }
-    .tags { margin-top: 1rem; display: flex; flex-wrap: wrap; gap: 0.375rem; }
-    .tags span {
-      border-radius: 0.375rem; background: var(--muted);
-      padding: 0.125rem 0.5rem; font-size: 11px; color: var(--muted-foreground);
-    }
-    .showcase-video {
-      margin-top: 1.25rem; overflow: hidden; border: 1px solid var(--border);
-      border-radius: 0.5rem; background: oklch(0.19 0.006 60 / 0.4);
-    }
-    .showcase-video video { aspect-ratio: 16 / 9; width: 100%; display: block; background: black; }
-    .showcase-link {
-      margin-top: 1.25rem; display: flex; align-items: center; justify-content: space-between;
-      border: 1px solid var(--border); border-radius: 0.5rem;
-      background: oklch(0.19 0.006 60 / 0.4); padding: 0.75rem 1rem;
-      font-size: 0.875rem; color: var(--muted-foreground); transition: border-color 0.15s, color 0.15s;
-    }
-    .showcase-link:hover { border-color: oklch(0.72 0.14 55 / 0.5); color: var(--foreground); }
-    .showcase-link span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-    .showcase-link svg { color: var(--primary); flex-shrink: 0; margin-left: 0.75rem; }
-    .repo-links { margin-top: 1rem; display: flex; flex-wrap: wrap; align-items: center; gap: 1rem; font-size: 0.75rem; }
-    .repo-links a {
-      display: inline-flex; align-items: center; gap: 0.375rem;
-      color: var(--muted-foreground); transition: color 0.15s;
-    }
-    .repo-links a:hover { color: var(--primary); }
-
-    /* services */
-    .services { display: grid; gap: 0.75rem; list-style: none; }
-    .services li {
-      border: 1px solid var(--border); border-radius: 0.5rem;
-      background: oklch(0.19 0.006 60 / 0.4); padding: 1.25rem 1rem;
-      font-size: 0.875rem; transition: border-color 0.15s;
-    }
-    .services li:hover { border-color: oklch(0.72 0.14 55 / 0.4); }
-    .services li span { font-size: 0.75rem; color: var(--primary); }
-
-    /* stack */
-    .stack-group { display: flex; flex-direction: column; gap: 0.75rem; margin-bottom: 1.5rem; }
-    .stack-group:last-child { margin-bottom: 0; }
-    .stack-label {
-      width: 7rem; flex-shrink: 0; font-size: 0.75rem;
-      text-transform: uppercase; letter-spacing: 0.1em; color: var(--muted-foreground);
-    }
-    .stack-items { display: flex; flex-wrap: wrap; gap: 0.375rem; }
-    .stack-items span {
-      border: 1px solid var(--border); border-radius: 0.375rem;
-      background: oklch(0.19 0.006 60 / 0.4); padding: 0.25rem 0.5rem;
-      font-size: 0.75rem;
+    section { padding-top: 3.5rem; }
+    h2 {
+      font-size: 12px; font-weight: 500; text-transform: uppercase;
+      letter-spacing: 0.18em; color: var(--dim); margin-bottom: 1.5rem;
     }
 
-    /* contact */
-    .contact-intro { margin-bottom: 2rem; max-width: 36rem; color: var(--muted-foreground); }
-    .contact-grid { display: grid; gap: 0.5rem; }
-    .contact-link {
-      display: flex; align-items: center; justify-content: space-between;
-      border: 1px solid var(--border); border-radius: 0.5rem;
-      background: oklch(0.19 0.006 60 / 0.4); padding: 0.75rem 1rem;
-      transition: border-color 0.15s, background 0.15s;
-    }
-    .contact-link:hover { border-color: oklch(0.72 0.14 55 / 0.5); background: var(--card); }
-    .contact-link .label { display: flex; align-items: center; gap: 0.75rem; font-size: 0.875rem; }
-    .contact-link .label svg { color: var(--primary); flex-shrink: 0; }
-    .contact-link .arrow { color: var(--muted-foreground); transition: transform 0.15s, color 0.15s; }
-    .contact-link:hover .arrow { transform: translate(2px, -2px); color: var(--primary); }
+    .group { margin-bottom: 2rem; }
+    .group:last-child { margin-bottom: 0; }
+    .group-tag { font-size: 11px; letter-spacing: 0.1em; color: var(--accent); margin-bottom: 0.85rem; }
 
-    footer { border-top: 1px solid oklch(0.26 0.008 60 / 0.6); }
-    .footer-inner {
-      display: flex; flex-direction: column; align-items: flex-start;
-      justify-content: space-between; gap: 0.5rem;
-      padding-top: 2rem; padding-bottom: 2rem;
-      font-size: 0.75rem; color: var(--muted-foreground);
+    .item { padding: 0.85rem 0; border-top: 1px solid var(--line); }
+    .item:first-of-type { border-top: none; }
+    .item-head { display: flex; align-items: baseline; gap: 0.6rem; flex-wrap: wrap; }
+    .item-head .name { font-weight: 500; transition: color 0.15s; }
+    .item-head .name:hover { color: var(--accent); }
+    .item-head .status { font-size: 11px; color: var(--dim); }
+    .item p { color: var(--dim); margin-top: 0.3rem; font-size: 13px; }
+    .item .links { margin-top: 0.45rem; display: flex; gap: 1rem; font-size: 12px; }
+    .item .links a { color: var(--dim); transition: color 0.15s; }
+    .item .links a:hover { color: var(--accent); }
+
+    .item video {
+      width: 100%; display: block; margin-top: 0.75rem;
+      aspect-ratio: 16 / 9; background: #000;
+      border: 1px solid var(--line); border-radius: 2px;
     }
 
-    @media (min-width: 640px) {
-      main { padding-top: 8rem; }
-      .terminal-body { padding: 1.5rem; }
-      .services { grid-template-columns: repeat(3, 1fr); }
-      .contact-grid { grid-template-columns: repeat(2, 1fr); }
-      .stack-group { flex-direction: row; align-items: flex-start; gap: 1.5rem; }
-      .footer-inner { flex-direction: row; align-items: center; }
-    }
+    .stack-row { display: flex; gap: 1rem; margin-bottom: 0.6rem; flex-wrap: wrap; }
+    .stack-row .k { width: rem; flex-shrink: 0; color: var(--dim); font-size: 12px; text-transform: uppercase; letter-spacing: 0.1em; }
+    .stack-row .v { color: var(--fg); }
+
+    .contact a { color: var(--fg); transition: color 0.15s; }
+    .contact a:hover { color: var(--accent); }
+    .contact .row { display: flex; gap: 1rem; padding: 0.45rem 0; border-top: 1px solid var(--line); }
+    .contact .row:first-of-type { border-top: none; }
+    .contact .row .k { width: 6rem; flex-shrink: 0; color: var(--dim); font-size: 12px; text-transform: uppercase; letter-spacing: 0.1em; }
+
+    footer { padding: 4rem 0 3rem; color: var(--dim); font-size: 12px; }
   </style>
 </head>
 <body>
-  <header>
-    <div class="container header-inner">
-      <a href="#top">yacine@ubuntu</a>
-      <nav aria-label="Main navigation">
-        <a href="#about">about</a>
-        <a href="#projects">projects</a>
+  <div class="wrap">
+    <header>
+      <span class="me">yacine benaroussi<span class="dim"> / software engineer</span></span>
+      <nav>
+        <a href="#work">work</a>
+        <a href="#stack">stack</a>
         <a href="#contact">contact</a>
       </nav>
-    </div>
-  </header>
+    </header>
 
-  <main class="container">
-    <!-- hero -->
-    <section id="top">
-      <div class="terminal">
-        <div class="terminal-bar"><span>yacine@ubuntu: ~</span></div>
-        <div class="terminal-body" id="terminal-body">
-          <div>
-            <span class="prompt-user">yacine@ubuntu</span><span class="prompt-dim">:</span><span class="prompt-path">~</span><span class="prompt-dim">$ </span><span id="cmd-out"></span><span class="caret" id="cmd-caret"></span>
+    <main>
+      <p class="intro">
+        Software engineer based in Oran, Algeria. Working on
+        <span class="accent">AI</span>, <span class="accent">full-stack</span>
+        and <span class="accent">low-level systems</span>.
+      </p>
+      <p class="intro-sub">
+        Currently dabbling with tcp/udp, RAG systems, neural networks and low-level
+        internals. Every repo below is well-documented &mdash; feel free check them out!
+      </p>
+
+      <section id="work">
+        <h2>Selected work</h2>
+
+        <div class="group">
+          <div class="group-tag">ai</div>
+          <div class="item">
+            <div class="item-head">
+              <a class="name" href="https://github.com/yacine204/geoGuessr_assistant" target="_blank" rel="noreferrer">geoGuessr_assistant</a>
+              <span class="status">thesis</span>
+            </div>
+            <p>Street-level image analysis pipeline for geographic location inference. YOLO detection, OCR and Overpass / Nominatim queries to triangulate a location from a single picture.</p>
+            <video src="https://github.com/user-attachments/assets/d70b2dbb-d351-4f3a-bd26-0f363e6a90f6" controls playsinline preload="metadata"></video>
+            <div class="links">
+              <a href="https://github.com/yacine204/geoGuessr_assistant" target="_blank" rel="noreferrer">repository</a>
+            </div>
           </div>
-          <div class="term-line hidden" id="line1">
-            <span class="gt">&gt; </span><span id="line1-out"></span><span class="caret hidden" id="line1-caret"></span>
+          <div class="item">
+            <div class="item-head">
+              <a class="name" href="https://github.com/yacine204/Aiki" target="_blank" rel="noreferrer">Aiki</a>
+              <span class="status">wip</span>
+            </div>
+            <p>Local Wikipedia retrieval engine built on TF-IDF and cosine similarity. A lightweight, offline-friendly search / RAG backbone for LLM pipelines.</p>
+            <video src="https://github.com/user-attachments/assets/992d43ed-8369-4032-a910-d10c80d528a5" controls playsinline preload="metadata"></video>
+            <div class="links">
+              <a href="https://github.com/yacine204/Aiki" target="_blank" rel="noreferrer">repository</a>
+              <a href="https://yacine204.github.io/geoGuessr_Assistant/" target="_blank" rel="noreferrer">wiki view</a>
+            </div>
           </div>
-          <div class="term-line hidden" id="line2">
-            <span class="gt">&gt; </span><span id="line2-out"></span><span class="caret hidden" id="line2-caret"></span>
+        </div>
+
+        <div class="group">
+          <div class="group-tag">full-stack</div>
+          <div class="item">
+            <div class="item-head">
+              <a class="name" href="https://github.com/yacine204/vdrw" target="_blank" rel="noreferrer">vdrw</a>
+              <span class="status">wip</span>
+            </div>
+            <p>Real-time collaborative drawing &amp; chatting app on Django Channels and WebSockets. Shared canvas, live presence, instant messaging.</p>
+            <div class="links">
+              <a href="https://github.com/yacine204/vdrw" target="_blank" rel="noreferrer">repository</a>
+              <a href="https://vdrw.vercel.app/" target="_blank" rel="noreferrer">live</a>
+            </div>
           </div>
-          <div class="hidden" id="final-prompt" style="padding-top: 0.25rem;">
-            <span class="prompt-user">yacine@ubuntu</span><span class="prompt-dim">:</span><span class="prompt-path">~</span><span class="prompt-dim">$ </span><span class="caret"></span>
+        </div>
+
+        <div class="group">
+          <div class="group-tag">low-level</div>
+          <div class="item">
+            <div class="item-head">
+              <a class="name" href="https://github.com/yacine204/cit" target="_blank" rel="noreferrer">cit</a>
+              <span class="status">wip</span>
+            </div>
+            <p>My own implementation of git, from scratch in C. Object store, refs, commits &mdash; modeled around a rose-tree to mirror git&apos;s internals.</p>
+            <div class="links">
+              <a href="https://github.com/yacine204/cit" target="_blank" rel="noreferrer">repository</a>
+            </div>
+          </div>
+          <div class="item">
+            <div class="item-head">
+              <a class="name" href="https://github.com/yacine204/frg_compiler" target="_blank" rel="noreferrer">frg_compiler</a>
+            </div>
+            <p>A compiler for the frog language (.frg). Hand-written lexer, syntax and semantic analysis in C, with a GTK-based UI for inspecting compilation stages.</p>
+            <div class="links">
+              <a href="https://github.com/yacine204/frg_compiler" target="_blank" rel="noreferrer">repository</a>
+            </div>
           </div>
         </div>
-      </div>
-    </section>
+      </section>
 
-    <!-- about -->
-    <section>
-      <div class="section-header" id="about">
-        <div class="cmd"><span>$</span> cat about.md</div>
-        <h2>about</h2>
-      </div>
-      <div class="about-text">
-        <p>
-          Software Engineer, Currently dabbling with tcp/udp, RAG systems, neural networks and low level systems.
-        </p>
-        <p class="dim">every repo below is well-documented &mdash; feel free to dig in.</p>
-      </div>
-    </section>
+      <section id="stack">
+        <h2>Stack</h2>
+        <div class="stack-row"><span class="k">lang</span><span class="v">html, css, js, ts, python, java, go, c, c++, asm</span></div>
+        <div class="stack-row"><span class="k">frameworks</span><span class="v">django, fastapi, nestjs, express</span></div>
+        <div class="stack-row"><span class="k">libs</span><span class="v">react, three.js, numpy, ultralytics, pandas, pytorch, sklearn</span></div>
+      </section>
 
-    <!-- projects -->
-    <section>
-      <div class="section-header" id="projects">
-        <div class="cmd"><span>$</span> ls projects/</div>
-        <h2>selected work</h2>
-      </div>
+      <section id="contact" class="contact">
+        <h2>Contact</h2>
+        <div class="row"><span class="k">email</span><a href="mailto:yacinebenarousi@gmail.com">yacinebenarousi@gmail.com</a></div>
+        <div class="row"><span class="k">github</span><a href="https://github.com/yacine204" target="_blank" rel="noreferrer">github.com/yacine204</a></div>
+        <div class="row"><span class="k">linkedin</span><a href="https://www.linkedin.com/in/yacine-benaroussi-b0b62536b" target="_blank" rel="noreferrer">yacine-benaroussi</a></div>
+        <div class="row"><span class="k">instagram</span><a href="https://www.instagram.com/yv_cin3/" target="_blank" rel="noreferrer">yv_cin3</a></div>
+      </section>
+    </main>
 
-      <div class="project-group">
-        <div class="group-label"><span>AI</span><span class="rule"></span></div>
-        <div class="projects">
-          <article>
-            <div class="title-row">
-              <a class="name" href="https://github.com/yacine204/geoGuessr_assistant" target="_blank" rel="noreferrer">
-                geoGuessr_assistant
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg>
-              </a>
-              <span class="status"><span class="paren">(</span>Thesis<span class="paren">)</span></span>
-            </div>
-            <p class="desc">
-              Street-level image analysis pipeline for geographic location inference. Combines YOLO
-              object detection, OCR and Overpass / Nominatim queries to triangulate a likely location
-              from a single picture.
-            </p>
-            <div class="tags">
-              <span>#DeepLearning</span><span>#computer_vision</span><span>#OCR</span><span>#3D_Rendering</span>
-            </div>
-            <div class="showcase-video">
-              <video src="https://github.com/user-attachments/assets/d70b2dbb-d351-4f3a-bd26-0f363e6a90f6" controls playsinline preload="metadata"></video>
-            </div>
-            <div class="repo-links">
-              <a href="https://github.com/yacine204/geoGuessr_assistant" target="_blank" rel="noreferrer">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
-                repository
-              </a>
-            </div>
-          </article>
-
-          <article>
-            <div class="title-row">
-              <a class="name" href="https://github.com/yacine204/Aiki" target="_blank" rel="noreferrer">
-                Aiki
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg>
-              </a>
-              <span class="status"><span class="paren">(</span>WIP<span class="paren">)</span></span>
-            </div>
-            <p class="desc">
-              Local Wikipedia retrieval engine built on TF-IDF and cosine similarity. Aims to act as
-              a lightweight, offline-friendly search / RAG backbone for LLM pipelines.
-            </p>
-            <div class="tags">
-              <span>#Search Engine</span><span>#RAG</span><span>#LLM</span><span>#web_scraping</span>
-            </div>
-            <div class="showcase-video">
-              <video src="https://github.com/user-attachments/assets/992d43ed-8369-4032-a910-d10c80d528a5" controls playsinline preload="metadata"></video>
-            </div>
-            <div class="repo-links">
-              <a href="https://github.com/yacine204/Aiki" target="_blank" rel="noreferrer">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
-                repository
-              </a>
-              <a href="https://yacine204.github.io/geoGuessr_Assistant/" target="_blank" rel="noreferrer">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 3h6v6"/><path d="M10 14 21 3"/><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/></svg>
-                wiki view
-              </a>
-            </div>
-          </article>
-        </div>
-      </div>
-
-      <div class="project-group">
-        <div class="group-label"><span>Full-Stack</span><span class="rule"></span></div>
-        <div class="projects">
-          <article>
-            <div class="title-row">
-              <a class="name" href="https://github.com/yacine204/vdrw" target="_blank" rel="noreferrer">
-                vdrw
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg>
-              </a>
-              <span class="status"><span class="paren">(</span>WIP<span class="paren">)</span></span>
-            </div>
-            <p class="desc">
-              Real-time collaborative drawing &amp; chatting app powered by Django Channels and
-              WebSockets. Shared canvas, live presence, instant messaging.
-            </p>
-            <div class="tags">
-              <span>#websockets</span><span>#django</span><span>#real_time</span>
-            </div>
-            <a class="showcase-link" href="https://vdrw.vercel.app/" target="_blank" rel="noreferrer">
-              <span>vdrw.vercel.app/</span>
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 3h6v6"/><path d="M10 14 21 3"/><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/></svg>
-            </a>
-            <div class="repo-links">
-              <a href="https://github.com/yacine204/vdrw" target="_blank" rel="noreferrer">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
-                repository
-              </a>
-            </div>
-          </article>
-        </div>
-      </div>
-
-      <div class="project-group">
-        <div class="group-label"><span>Low-Level</span><span class="rule"></span></div>
-        <div class="projects">
-          <article>
-            <div class="title-row">
-              <a class="name" href="https://github.com/yacine204/cit" target="_blank" rel="noreferrer">
-                cit
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg>
-              </a>
-              <span class="status"><span class="paren">(</span>WIP<span class="paren">)</span></span>
-            </div>
-            <p class="desc">
-              My own implementation of git, from scratch in C. Object store, refs, commits &mdash;
-              modeled around a rose-tree data structure to mirror git&apos;s internals.
-            </p>
-            <div class="tags">
-              <span>#version_control</span><span>#git</span><span>#rose_tree</span><span>#data_structure</span>
-            </div>
-            <div class="repo-links">
-              <a href="https://github.com/yacine204/cit" target="_blank" rel="noreferrer">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
-                repository
-              </a>
-            </div>
-          </article>
-
-          <article>
-            <div class="title-row">
-              <a class="name" href="https://github.com/yacine204/frg_compiler" target="_blank" rel="noreferrer">
-                frg_compiler
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg>
-              </a>
-            </div>
-            <p class="desc">
-              A compiler for the frog language (.frg). Hand-written lexer, syntax and semantic
-              analysis &mdash; entirely in C, with a GTK-based UI for inspecting compilation stages.
-            </p>
-            <div class="tags">
-              <span>#compiler</span><span>#lexical</span><span>#syntax</span><span>#semantic</span>
-            </div>
-            <div class="repo-links">
-              <a href="https://github.com/yacine204/frg_compiler" target="_blank" rel="noreferrer">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
-                repository
-              </a>
-            </div>
-          </article>
-        </div>
-      </div>
-    </section>
-
-    <!-- stack -->
-    <section>
-      <div class="section-header" id="stack">
-        <div class="cmd"><span>$</span> which --all</div>
-        <h2>what i use</h2>
-      </div>
-      <div class="stack-group">
-        <div class="stack-label">languages</div>
-        <div class="stack-items">
-          <span>html</span><span>css</span><span>js</span><span>ts</span><span>python</span>
-          <span>java</span><span>go</span><span>c</span><span>c++</span><span>assembly</span>
-        </div>
-      </div>
-      <div class="stack-group">
-        <div class="stack-label">frameworks</div>
-        <div class="stack-items">
-          <span>django</span><span>fastapi</span><span>nestjs</span><span>express</span>
-        </div>
-      </div>
-      <div class="stack-group">
-        <div class="stack-label">libraries</div>
-        <div class="stack-items">
-          <span>react</span><span>three.js</span><span>numpy</span><span>ultralytics</span>
-          <span>pandas</span><span>pytorch</span><span>sklearn</span>
-        </div>
-      </div>
-    </section>
-
-    <!-- contact -->
-    <section>
-      <div class="section-header" id="contact">
-        <div class="cmd"><span>$</span> contact --help</div>
-        <h2>get in touch</h2>
-      </div>
-      <div class="contact-grid">
-        <a class="contact-link" href="mailto:yacinebenarousi@gmail.com">
-          <span class="label">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
-            yacinebenarousi@gmail.com
-          </span>
-          <svg class="arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg>
-        </a>
-        <a class="contact-link" href="https://www.linkedin.com/in/yacine-benaroussi-b0b62536b" target="_blank" rel="noreferrer">
-          <span class="label">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="10" r="3"/><path d="M7 20.662V19a2 2 0 0 1 2-2h6a2 2 0 0 1 2 2v1.662"/></svg>
-            linkedin.com/in/yacine-benaroussi
-          </span>
-          <svg class="arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg>
-        </a>
-        <a class="contact-link" href="https://github.com/yacine204" target="_blank" rel="noreferrer">
-          <span class="label">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
-            github.com/yacine204
-          </span>
-          <svg class="arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg>
-        </a>
-        <a class="contact-link" href="https://www.instagram.com/yv_cin3/" target="_blank" rel="noreferrer">
-          <span class="label">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/></svg>
-            instagram.com/yv_cin3
-          </span>
-          <svg class="arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg>
-        </a>
-      </div>
-    </section>
-  </main>
-
-  <footer>
-    <div class="container footer-inner">
-      <span>&copy; <span id="year"></span> Yacine Benaroussi</span>
-    </div>
-  </footer>
+    <footer>
+      &copy; <span id="year"></span> yacine benaroussi
+    </footer>
+  </div>
 
   <script>
     document.getElementById("year").textContent = new Date().getFullYear();
-
-    // --- terminal typewriter ---
-    var CMD = "whoami";
-    var LINE1 =
-      "yacine benaroussi \u2014 computer science persuing my master's, software engineer based in oran, algeria.";
-    var LINE2 =
-      "i turn complex ideas into clean, usable software. focused on ai, full-stack, and low-level systems \u2014 i like understanding how things really work under the hood.";
-    var HIGHLIGHTS = ["ai", "full-stack", "low-level systems"];
-
-    var cmdOut = document.getElementById("cmd-out");
-    var cmdCaret = document.getElementById("cmd-caret");
-    var line1 = document.getElementById("line1");
-    var line1Out = document.getElementById("line1-out");
-    var line1Caret = document.getElementById("line1-caret");
-    var line2 = document.getElementById("line2");
-    var line2Out = document.getElementById("line2-out");
-    var line2Caret = document.getElementById("line2-caret");
-    var finalPrompt = document.getElementById("final-prompt");
-
-    function type(el, text, speed, done) {
-      var i = 0;
-      el.textContent = "";
-      var id = setInterval(function () {
-        i++;
-        el.textContent = text.slice(0, i);
-        if (i >= text.length) {
-          clearInterval(id);
-          if (done) done();
-        }
-      }, speed);
-    }
-
-    function highlight(el, text, words) {
-      var html = text
-        .replace(/&/g, "&amp;")
-        .replace(/</g, "&lt;")
-        .replace(/>/g, "&gt;");
-      words.forEach(function (w) {
-        html = html.split(w).join('<span class="hl">' + w + "</span>");
-      });
-      el.innerHTML = html;
-    }
-
-    function runCycle() {
-      cmdOut.textContent = "";
-      line1Out.textContent = "";
-      line2Out.innerHTML = "";
-      line1.classList.add("hidden");
-      line2.classList.add("hidden");
-      finalPrompt.classList.add("hidden");
-      cmdCaret.classList.remove("hidden");
-
-      setTimeout(function () {
-        type(cmdOut, CMD, 75, function () {
-          cmdCaret.classList.add("hidden");
-          setTimeout(function () {
-            line1.classList.remove("hidden");
-            line1Caret.classList.remove("hidden");
-            type(line1Out, LINE1, 14, function () {
-              line1Caret.classList.add("hidden");
-              setTimeout(function () {
-                line2.classList.remove("hidden");
-                line2Caret.classList.remove("hidden");
-                type(line2Out, LINE2, 14, function () {
-                  line2Caret.classList.add("hidden");
-                  highlight(line2Out, LINE2, HIGHLIGHTS);
-                  finalPrompt.classList.remove("hidden");
-                  setTimeout(runCycle, 10000);
-                });
-              }, 250);
-            });
-          }, 220);
-        });
-      }, 350);
-    }
-
-    runCycle();
   </script>
 </body>
 </html>
